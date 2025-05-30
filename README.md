@@ -14,3 +14,6 @@ Analysis of financial news sentiment and stock price movements.
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+## Usage
+- Run `notebooks/<company>_eda.ipynb` for individual company analysis.
