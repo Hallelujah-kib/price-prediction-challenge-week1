@@ -7,4 +7,3 @@ ta-lib
 nltk
 textblob
 pynance
-
