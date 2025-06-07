@@ -1,0 +1,42 @@
+name: CI - Stock Sentiment Project
+
+on:
+  push:
+    branches: [main, task-*]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: 📦 Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: ✅ Lint with flake8
+      run: |
+        pip install flake8
+        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+
+    - name: 📚 Check notebook execution (dry run)
+      run: |
+        pip install nbconvert
+        jupyter nbconvert --execute --to notebook --inplace notebooks/eda_news_analysis.ipynb
+        jupyter nbconvert --execute --to notebook --inplace notebooks/stock_indicators.ipynb
+        jupyter nbconvert --execute --to notebook --inplace notebooks/sentiment_correlation.ipynb
+
+    - name: 🧪 Dependency check
+      run: pip check
